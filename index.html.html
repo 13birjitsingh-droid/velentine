@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Rhythm ji ❤️</title>
+
+<style>
+body{
+  background:linear-gradient(to bottom,#ffb6c1,#ffc0cb);
+  font-family:Arial,sans-serif;
+  text-align:center;
+  padding:40px;
+  color:#5a0f2e;
+  overflow:hidden;
+}
+img{
+  width:260px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.3);
+  margin:20px 0;
+}
+h1{font-size:36px}
+p{font-size:18px}
+
+button{
+  font-size:22px;
+  padding:12px 30px;
+  margin:15px;
+  border-radius:30px;
+  border:none;
+  cursor:pointer;
+  transition:.3s;
+}
+#yes{background:#ff3366;color:#fff}
+#yes:hover{transform:scale(1.1)}
+#no{
+  background:#fff;
+  color:#ff3366;
+  position:absolute;
+}
+
+/* effects */
+.sparkle{position:fixed;width:8px;height:8px;border-radius:50%;animation:spark 1s forwards}
+@keyframes spark{to{transform:scale(3);opacity:0}}
+
+.heart{position:fixed;font-size:24px;bottom:-40px;animation:floatUp linear forwards}
+@keyframes floatUp{to{transform:translateY(-120vh);opacity:0}}
+
+.bird{position:fixed;left:-50px;font-size:26px;animation:fly linear forwards}
+@keyframes fly{to{transform:translateX(120vw)}}
+
+.firework{
+  position:fixed;
+  width:6px;height:6px;
+  border-radius:50%;
+  background:#ff3366;
+  animation:boom 1.5s forwards;
+}
+@keyframes boom{
+  to{transform:translate(var(--x),var(--y));opacity:0}
+}
+
+/* typing */
+#typing{
+  font-size:32px;
+  font-weight:bold;
+  margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Hidden background song -->
+<audio id="bgSong" loop>
+  <source src="https://drive.google.com/uc?export=download&id=1XfBuwbTNeCqzz6w6B9YCNnLEx6GPmqtZ" type="audio/mpeg">
+</audio>
+
+<h1>Hey <span id="typing"></span> ❤️</h1>
+
+<img src="https://drive.google.com/uc?export=view&id=1HbmstfQ14grxXYwWCpgLESpLZ516x0t2" alt="Us ❤️">
+
+<p>Every moment with you feels like home 🥹</p>
+<p>So I made this little world for just us.</p>
+
+<h2>Will you be my Valentine? 💘</h2>
+
+<button id="yes" onclick="yesClick()">YES 💖</button>
+<button id="no" onmouseover="moveNo()">NO 🙈</button>
+
+<!-- 💘 Song after YES -->
+<audio id="yesSong">
+  <source src="https://drive.google.com/uc?export=download&id=13Zy-KgiND5dcEQorTRcV1-M_GSu8w3OD" type="audio/mpeg">
+</audio>
+
+<script>
+/* typing effect */
+const nameText="Rhythm ji my bube";
+let i=0;
+function typeName(){
+  if(i<nameText.length){
+    document.getElementById("typing").innerHTML+=nameText.charAt(i);
+    i++;
+    setTimeout(typeName,120);
+  }
+}
+typeName();
+
+/* start bg music on first interaction */
+document.body.addEventListener("click",()=>{
+  document.getElementById("bgSong").play();
+},{once:true});
+
+function yesClick(){
+  fadeOut(document.getElementById("bgSong"));
+  document.getElementById("yesSong").play();
+
+  document.body.innerHTML=`
+    <h1>YAYYYYY 😍💞</h1>
+    <p>You’re mine now… officially 💍</p>
+    <p>Happy Valentine’s, Rhythm ji my bube 🥹❤️</p>
+    <p>Apna bana liya piya 💘</p>
+    <h2>RHYTHM ❤️</h2>
+    <p style="opacity:.8">✨ This moment is saved forever ✨</p>
+  `;
+
+  for(let i=0;i<80;i++)sparkle();
+  for(let i=0;i<8;i++)bird();
+  spellFireworks("RHYTHM ❤️");
+
+  setInterval(heart,500);
+}
+
+/* fade out music */
+function fadeOut(audio){
+  let v=audio.volume;
+  const f=setInterval(()=>{
+    if(v>0.05){v-=0.05;audio.volume=v;}
+    else{audio.pause();clearInterval(f);}
+  },200);
+}
+
+function sparkle(){
+  const s=document.createElement("div");
+  s.className="sparkle";
+  s.style.left=Math.random()*innerWidth+"px";
+  s.style.top=Math.random()*innerHeight+"px";
+  s.style.background=["#fff","#ffd1dc","#ff69b4"][Math.floor(Math.random()*3)];
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),1000);
+}
+
+function bird(){
+  const b=document.createElement("div");
+  b.className="bird";
+  b.innerHTML="🐦💗";
+  b.style.top=Math.random()*60+"vh";
+  b.style.animationDuration=4+Math.random()*4+"s";
+  document.body.appendChild(b);
+}
+
+function heart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=4+Math.random()*3+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),7000);
+}
+
+/* fireworks spelling text */
+function spellFireworks(text){
+  const startX=innerWidth/2-150;
+  const y=innerHeight/3;
+  [...text].forEach((ch,idx)=>{
+    setTimeout(()=>{
+      for(let i=0;i<20;i++){
+        const f=document.createElement("div");
+        f.className="firework";
+        f.style.left=startX+idx*35+"px";
+        f.style.top=y+"px";
+        const a=Math.random()*Math.PI*2;
+        const d=Math.random()*80+30;
+        f.style.setProperty("--x",Math.cos(a)*d+"px");
+        f.style.setProperty("--y",Math.sin(a)*d+"px");
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),1500);
+      }
+    },idx*300);
+  });
+}
+
+function moveNo(){
+  const n=document.getElementById("no");
+  n.style.top=Math.random()*80+"vh";
+  n.style.left=Math.random()*80+"vw";
+}
+</script>
+
+</body>
+</html>
